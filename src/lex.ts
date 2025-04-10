@@ -5,6 +5,7 @@ export enum TokenType {
   OpenParen,
   CloseParen,
   BinaryOp,
+  EOF
 }
 
 export interface Token {
@@ -48,7 +49,7 @@ export function Tokenize(code: string): Token[] {
       src.shift();
     }
   }
-
+  tokens.push({type : TokenType.EOF, value : "EndOfFile"});
   return tokens;
 }
 
