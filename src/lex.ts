@@ -1,4 +1,5 @@
 export enum TokenType {
+  Null,
   Number,
   Identifier,
   Equals,
@@ -6,6 +7,10 @@ export enum TokenType {
   CloseParen,
   BinaryOp,
   EOF
+}
+
+const KEYWORDS : Record<string, TokenType> = {
+  null: TokenType.Null,
 }
 
 export interface Token {
@@ -42,6 +47,10 @@ export function Tokenize(code: string): Token[] {
       let ident = "";
       while (src.length > 0 && /[a-zA-Z]/.test(src[0])) {
         ident += src.shift();
+      }
+
+      if (ident in KEYWORDS){
+        tokens.push(getToken(ident, KEYWORDS[ident]));
       }
       tokens.push(getToken(ident, TokenType.Identifier));
     } else {

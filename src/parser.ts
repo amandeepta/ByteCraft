@@ -1,4 +1,4 @@
-import { State, Program, Exp, BinaryExp, NumericLiteral, Identifier } from "./ast";
+import { State, Program, Exp, BinaryExp, NumericLiteral, Identifier, NullLiteral } from "./ast";
 import { Tokenize, Token, TokenType } from "./lex";
 
 export default class Parser {
@@ -38,6 +38,14 @@ export default class Parser {
                     kind: "NumericLiteral",
                     value: parseFloat(numToken.value)
                 } as NumericLiteral;
+            }
+
+            case TokenType.Null: {
+                this.tokens.shift();
+                return {
+                    kind: "NullLiteral",
+                    value: "null"
+                } as NullLiteral;
             }
 
             case TokenType.OpenParen: {

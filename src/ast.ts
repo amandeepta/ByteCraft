@@ -1,4 +1,4 @@
-export type Node = "Program" | "NumericLiteral" | "Identifier" | "BinaryExp";
+export type Node = "Program" | "NumericLiteral" | "Identifier" | "BinaryExp" | "NullLiteral";
 
 export interface State {
   kind: Node;
@@ -26,4 +26,9 @@ export interface Identifier extends Exp {
 export interface NumericLiteral extends Exp {
   kind: "NumericLiteral";
   value: number;
+}
+
+export interface NullLiteral extends Exp {
+  kind: "NullLiteral";
+  value: "null";
 }
