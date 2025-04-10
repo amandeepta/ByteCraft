@@ -1,8 +1,8 @@
 import Parser from "./src/parser";
 import { inspect } from "util";
 
-// Example source code (Lisp-style)
-const sourceCode = "3+5";
+ 
+const sourceCode = "2+3*7";
 
 const parser = new Parser();
 const ast = parser.produceAst(sourceCode);

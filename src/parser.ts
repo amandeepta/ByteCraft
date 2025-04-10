@@ -42,7 +42,7 @@ export default class Parser {
 
             case TokenType.OpenParen: {
                 this.tokens.shift();
-                const expr = this.parseExp();
+                const expr = this.addExp();
                 this.expect(TokenType.CloseParen, "Expected closing parenthesis");
                 return expr;
             }
@@ -52,25 +52,46 @@ export default class Parser {
         }
     }
 
-    private parseExp(): Exp {
-        let left = this.parsePrimary();
-
+    private addExp(): Exp {
+        let left = this.mulExp();
         while (
             this.tokens.length > 0 &&
-            this.tokens[0].type === TokenType.BinaryOp
+            this.tokens[0].type === TokenType.BinaryOp &&
+            (this.tokens[0].value === "+" || this.tokens[0].value === "-")
         ) {
-            const operator = this.tokens.shift()!;
-            const right = this.parsePrimary();
-
+            const op = this.tokens.shift()!.value;
+            const right = this.mulExp();
             left = {
                 kind: "BinaryExp",
                 left,
                 right,
-                op: operator.value
+                op
             } as BinaryExp;
         }
-
         return left;
+    }
+
+    private mulExp(): Exp {
+        let left = this.parsePrimary();
+        while (
+            this.tokens.length > 0 &&
+            this.tokens[0].type === TokenType.BinaryOp &&
+            (this.tokens[0].value === "*" || this.tokens[0].value === "/" || this.tokens[0].value === "%")
+        ) {
+            const op = this.tokens.shift()!.value;
+            const right = this.parsePrimary();
+            left = {
+                kind: "BinaryExp",
+                left,
+                right,
+                op
+            } as BinaryExp;
+        }
+        return left;
+    }
+
+    private parseExp(): Exp {
+        return this.addExp();
     }
 
     public produceAst(code: string): Program {

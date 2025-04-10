@@ -53,9 +53,3 @@ export function Tokenize(code: string): Token[] {
   return tokens;
 }
 
-const input ="x+y= 24"
-
-const tokens = Tokenize(input);
-for (const token of tokens) {
-  console.log(token);
-}
